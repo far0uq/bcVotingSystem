@@ -1,0 +1,37 @@
+.poll-dropdown {
+  background-color: #414141;
+  margin: auto;
+  border-radius: 5px;
+  border: 0px;
+  color: white;
+  width: 50%;
+  height: 35px;
+  margin: 40px auto;
+}
+
+.voting-section {
+  background-color: #414141;
+  width: 70%;
+  margin: auto;
+  border-radius: 5px;
+  height: 520px;
+}
+
+.voting-section button {
+  background-color: #007721;
+  color: white;
+  border: 0px;
+  border-radius: 5px;
+  width: 80%;
+  height: 35px;
+}
+
+.voting-section button:hover {
+  background-color: #006377;
+}
+
+.voting-section h1 {
+  height: 430px;
+  background-color: white;
+  width: 80%;
+}

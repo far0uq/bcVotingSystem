@@ -1,0 +1,23 @@
+.base-panel {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.base-panel-header {
+  background-color: #414141;
+  width: auto;
+  height: 65px;
+}
+
+.cv-logo {
+  height: 60px;
+}
+
+.base-panel-header h3 {
+  color: white;
+  font-size: 17px;
+}
+
+.logout img {
+  height: 30px;
+}
