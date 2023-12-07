@@ -1,6 +1,7 @@
 import logo from "../../assets/logo/crystalvote_icon.png";
 import "./BasePanel.css";
 import VotingPanel from "./VotingPanel";
+import AdminPanel from "./AdminPanel";
 import logout_logo from "../../assets/logo/logout_logo.png";
 
 function BasePanel() {
@@ -18,7 +19,7 @@ function BasePanel() {
         <div className="col-1"></div>
       </nav>
 
-      <VotingPanel />
+      <AdminPanel />
     </div>
   );
 }

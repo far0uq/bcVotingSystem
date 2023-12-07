@@ -15,7 +15,13 @@
 
 .base-panel-header h3 {
   color: white;
-  font-size: 17px;
+  font-weight: bolder;
+  font-size: 14px;
+  margin: 0px;
+}
+
+.base-panel-header h3:hover {
+  color: #FF6100;
 }
 
 .logout img {

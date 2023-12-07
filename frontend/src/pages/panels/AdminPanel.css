@@ -1,0 +1,36 @@
+.manage-selection-panel {
+  background-color: #414141;
+  margin: auto;
+  border-radius: 5px;
+  border: 0px;
+  color: white;
+  width: 70%;
+  height: 35px;
+  margin: 40px auto;
+}
+
+.manage-selection-panel h6 {
+  margin: 0px;
+  font-size: 14px;
+  font-weight: bolder;
+}
+
+.manage-selection-panel h6:hover {
+  color:#ff6100;
+}
+
+.manage-main-panel div {
+  background-color: white;
+  width: 70%;
+  height: 440px;
+  border-radius: 5px;
+}
+
+.manage-main-panel button {
+  background-color: #ff6100;
+  color: white;
+  border: 0px;
+  border-radius: 5px;
+  width: 70%;
+  height: 35px;
+}
