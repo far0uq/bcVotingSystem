@@ -52,7 +52,7 @@ export default function SignIn() {
             </div>
             <div className="inputs">
               <input
-                type="text"
+                type="password"
                 placeholder="Password"
                 name="password"
                 onChange={formik.handleChange}

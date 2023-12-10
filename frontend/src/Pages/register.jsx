@@ -26,6 +26,8 @@ export default function Register() {
       password: '',
       confirmPassword: '',
     },
+
+    
     validationSchema: RegisterSchema,
     onSubmit: (values) => {
       console.log('Sign Up:', values);
@@ -56,7 +58,7 @@ export default function Register() {
             </div>
             <div className="inputs">
               <input
-                type="text"
+                type="password"
                 placeholder="Password"
                 name="password"
                 onChange={formik.handleChange}
