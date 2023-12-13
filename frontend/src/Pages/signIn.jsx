@@ -4,6 +4,7 @@ import './auth.css'
 import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import axios from 'axios';
 
 const SignInSchema = Yup.object().shape({
   username: Yup.string().required('Username is required'),
@@ -16,17 +17,22 @@ const SignInSchema = Yup.object().shape({
     ),
 });
 
-export default function SignIn() {
-  const formik = useFormik({
-    initialValues: {
-      username: '',
-      password: '',
-    },
-    validationSchema: SignInSchema,
-    onSubmit: (values) => {
-      console.log('Sign In:', values);
-    },
-  });
+  export default function SignIn() {
+    const formik = useFormik({
+      initialValues: {
+        username: '',
+        password: '',
+      },
+      validationSchema: SignInSchema,
+      onSubmit: async (values) => {
+        try {
+          const response = await axios.post('http://localhost:3001/auth/login', values);
+          console.log('Login successful:', response.data);
+        } catch (error) {
+          console.error('Login failed:', error.response.data.error);
+        }
+      },
+    });
 
   return (
     <>

@@ -4,6 +4,7 @@ import './auth.css'
 import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import axios from 'axios';
 
 const RegisterSchema = Yup.object().shape({
   username: Yup.string().required('Username is required'),
@@ -19,21 +20,35 @@ const RegisterSchema = Yup.object().shape({
     .oneOf([Yup.ref('password'), null], 'Passwords must match'),
 });
 
-export default function Register() {
+const Register = () => {
+  const history = useHistory();
+
   const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
       confirmPassword: '',
     },
-
-    
     validationSchema: RegisterSchema,
-    onSubmit: (values) => {
-      console.log('Sign Up:', values);
+    onSubmit: async (values) => {
+      try {
+        const response = await axios.post('http://localhost:3001/auth/register', values);
+        console.log('Registration successful:', response.data);
+
+        // Check if the registered user is an admin
+        const isAdmin = response.data.isAdmin;
+        if (isAdmin) {
+        
+          history.push('/admin-panel');
+        } else {
+       
+          history.push('/voter-panel');
+        }
+      } catch (error) {
+        console.error('Registration failed:', error.response.data.error);
+      }
     },
   });
- 
   return (
     <>
       <div className="rect"></div>
