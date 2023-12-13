@@ -1,64 +1,61 @@
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.5.15;
 
 contract Voting {
     struct Candidate {
+        uint id;
         string name;
-        uint256 voteCount;
+        string party; 
+        uint voteCount;
     }
 
-    Candidate[] public candidates;
-    address owner;
-    mapping(address => bool) public voters;
+    mapping (uint => Candidate) public candidates;
+    mapping (address => bool) public voters;
 
-    uint256 public votingStart;
+    
+    uint public countCandidates;
     uint256 public votingEnd;
+    uint256 public votingStart;
 
-constructor(string[] memory _candidateNames, uint256 _durationInMinutes) {
-    for (uint256 i = 0; i < _candidateNames.length; i++) {
-        candidates.push(Candidate({
-            name: _candidateNames[i],
-            voteCount: 0
-        }));
+
+    function addCandidate(string memory name, string memory party) public  returns(uint) {
+               countCandidates ++;
+               candidates[countCandidates] = Candidate(countCandidates, name, party, 0);
+               return countCandidates;
     }
-    owner = msg.sender;
-    votingStart = block.timestamp;
-    votingEnd = block.timestamp + (_durationInMinutes * 1 minutes);
-}
+   
+    function vote(uint candidateID) public {
 
-    modifier onlyOwner {
-        require(msg.sender == owner);
-        _;
-    }
+       require((votingStart <= now) && (votingEnd > now));
+   
+       require(candidateID > 0 && candidateID <= countCandidates);
 
-    function addCandidate(string memory _name) public onlyOwner {
-        candidates.push(Candidate({
-                name: _name,
-                voteCount: 0
-        }));
-    }
-
-    function vote(uint256 _candidateIndex) public {
-        require(!voters[msg.sender], "You have already voted.");
-        require(_candidateIndex < candidates.length, "Invalid candidate index.");
-
-        candidates[_candidateIndex].voteCount++;
-        voters[msg.sender] = true;
-    }
-
-    function getAllVotesOfCandiates() public view returns (Candidate[] memory){
-        return candidates;
-    }
-
-    function getVotingStatus() public view returns (bool) {
-        return (block.timestamp >= votingStart && block.timestamp < votingEnd);
+       //daha önce oy kullanmamıs olmalı
+       require(!voters[msg.sender]);
+              
+       voters[msg.sender] = true;
+       
+       candidates[candidateID].voteCount ++;      
     }
     
-    function getRemainingTime() public view returns (uint256) {
-        require(block.timestamp >= votingStart, "Voting has not started yet.");
-        if (block.timestamp >= votingEnd) {
-            return 0;
+    function checkVote() public view returns(bool){
+        return voters[msg.sender];
     }
-        return votingEnd - block.timestamp;
+       
+    function getCountCandidates() public view returns(uint) {
+        return countCandidates;
+    }
+
+    function getCandidate(uint candidateID) public view returns (uint,string memory, string memory,uint) {
+        return (candidateID,candidates[candidateID].name,candidates[candidateID].party,candidates[candidateID].voteCount);
+    }
+
+    function setDates(uint256 _startDate, uint256 _endDate) public{
+        require((votingEnd == 0) && (votingStart == 0) && (_startDate + 1000000 > now) && (_endDate > _startDate));
+        votingEnd = _endDate;
+        votingStart = _startDate;
+    }
+
+    function getDates() public view returns (uint256,uint256) {
+      return (votingStart,votingEnd);
     }
 }
