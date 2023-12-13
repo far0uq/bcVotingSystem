@@ -1,61 +1,88 @@
-pragma solidity ^0.5.15;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
 contract Voting {
+    address public admin;
+    string public winnerName;
+
+    struct Voter {
+        bool hasVoted;
+        uint256 votedCandidateIndex;
+    }
+
     struct Candidate {
-        uint id;
         string name;
-        string party; 
-        uint voteCount;
+        address candidateAddress; 
+        uint256 voteCount;
     }
 
-    mapping (uint => Candidate) public candidates;
-    mapping (address => bool) public voters;
+    mapping(address => Voter) public voters;
+    Candidate[] public candidates;
 
-    
-    uint public countCandidates;
-    uint256 public votingEnd;
-    uint256 public votingStart;
+    event VoteCast(address indexed voter, uint256 indexed candidateIndex);
 
-
-    function addCandidate(string memory name, string memory party) public  returns(uint) {
-               countCandidates ++;
-               candidates[countCandidates] = Candidate(countCandidates, name, party, 0);
-               return countCandidates;
-    }
-   
-    function vote(uint candidateID) public {
-
-       require((votingStart <= now) && (votingEnd > now));
-   
-       require(candidateID > 0 && candidateID <= countCandidates);
-
-       //daha önce oy kullanmamıs olmalı
-       require(!voters[msg.sender]);
-              
-       voters[msg.sender] = true;
-       
-       candidates[candidateID].voteCount ++;      
-    }
-    
-    function checkVote() public view returns(bool){
-        return voters[msg.sender];
-    }
-       
-    function getCountCandidates() public view returns(uint) {
-        return countCandidates;
+    modifier onlyAdmin {
+        require(msg.sender == admin, "Not the admin");
+        _;
     }
 
-    function getCandidate(uint candidateID) public view returns (uint,string memory, string memory,uint) {
-        return (candidateID,candidates[candidateID].name,candidates[candidateID].party,candidates[candidateID].voteCount);
+    modifier onlyDuringVotingPeriod {
+        require(bytes(winnerName).length == 0, "Voting period has ended.");
+        _;
     }
 
-    function setDates(uint256 _startDate, uint256 _endDate) public{
-        require((votingEnd == 0) && (votingStart == 0) && (_startDate + 1000000 > now) && (_endDate > _startDate));
-        votingEnd = _endDate;
-        votingStart = _startDate;
+    constructor(string[] memory _candidateNames, address[] memory _candidateAddresses) {
+        require(_candidateNames.length == _candidateAddresses.length, "Mismatch in candidate data");
+
+        admin = msg.sender;
+
+        for (uint256 i = 0; i < _candidateNames.length; i++) {
+            candidates.push(Candidate({
+                name: _candidateNames[i],
+                candidateAddress: _candidateAddresses[i],
+                voteCount: 0
+            }));
+        }
     }
 
-    function getDates() public view returns (uint256,uint256) {
-      return (votingStart,votingEnd);
+    function addCandidate(string memory _name, address _candidateAddress) public onlyAdmin onlyDuringVotingPeriod {
+        candidates.push(Candidate({
+            name: _name,
+            candidateAddress: _candidateAddress,
+            voteCount: 0
+        }));
+    }
+
+    function vote(uint256 _candidateIndex) public onlyDuringVotingPeriod {
+        require(!voters[msg.sender].hasVoted, "You have already voted.");
+        require(_candidateIndex < candidates.length, "Invalid candidate index.");
+
+        candidates[_candidateIndex].voteCount++;
+        voters[msg.sender].hasVoted = true;
+        voters[msg.sender].votedCandidateIndex = _candidateIndex;
+
+        emit VoteCast(msg.sender, _candidateIndex);
+    }
+
+    function getAllVotesOfCandidates() public view returns (Candidate[] memory) {
+        return candidates;
+    }
+
+    function getVotingStatus() public view returns (bool) {
+        return (bytes(winnerName).length == 0);
+    }
+
+    function getRemainingTime() public view returns (uint256) {
+        if (bytes(winnerName).length > 0) {
+            return 0;
+        }
+        return type(uint256).max;
+    }
+
+    function getCandidateByIndex(uint256 _candidateIndex) public view returns (string memory, address, uint256) {
+        require(_candidateIndex < candidates.length, "Invalid candidate index");
+
+        Candidate memory candidate = candidates[_candidateIndex];
+        return (candidate.name, candidate.candidateAddress, candidate.voteCount);
     }
 }

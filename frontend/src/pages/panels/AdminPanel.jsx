@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./AdminPanel.css";
-import AddCandidatesForm from "../admin/forms/AddCandidatesForm";
+import AddCandidateForm from "../../components/AddCandidateForm";
 
 function AdminPanel() {
   const [showForm, setShowForm] = useState(false);
@@ -8,19 +8,24 @@ function AdminPanel() {
   return (
     <div>
       {console.log(showForm)}
-      {showForm && <AddCandidatesForm setShowForm={setShowForm} />}
+      {showForm && <AddCandidateForm setShowForm={setShowForm} />}
 
-      <div className="manage-selection-panel d-flex">
-        <h6 className="col-2 justify-content-center d-flex align-items-center">
-          Manage Polls
-        </h6>
-        <h6 className="col-2 justify-content-center d-flex align-items-center">
-          Manage Candidates
-        </h6>
-        <div className="col-8"></div>
-      </div>
       <div className="manage-main-panel d-flex flex-column align-items-center">
-        <div>this is the management panel currently selected</div>
+        <section>
+          <div>
+            <table className="table candidate-table">
+              <tr>
+                <th>Candidate Name</th>
+              </tr>
+              <tr>
+                <td>John Doe</td>
+              </tr>
+              <tr>
+                <td>Jane Doe</td>
+              </tr>
+            </table>
+          </div>
+        </section>
         <button className="mt-4" onClick={() => setShowForm(!showForm)}>
           Add
         </button>
