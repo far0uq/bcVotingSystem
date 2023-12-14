@@ -1,40 +1,19 @@
-.manage-main-panel section {
-  background-color: white;
-  width: 70%;
-  height: 440px;
+.manage-panels {
+  background-color: #414141;
   border-radius: 5px;
-  margin-top: 70px;
-}
-
-.manage-main-panel section > div {
   width: 70%;
   margin: auto;
-}
-
-.manage-main-panel button {
-  background-color: #ff6100;
-  color: white;
-  border: 0px;
-  border-radius: 5px;
-  width: 70%;
+  margin-top: 30px;
   height: 35px;
-  transition: background-color 0.2s ease;
-}
-.manage-main-panel button:hover {
-  background-color: #007721;
 }
 
-.candidate-table {
-  margin-top: 40px;
+.manage-panels a {
+  padding-left: 50px;
+  color: white;
+  transition: color 0.2s ease;
+  text-decoration: none;
 }
 
-.candidate-table,
-.candidate-table tr,
-.candidate-table td {
-  border: 1px solid black;
-}
-
-.candidate-table th,
-.candidate-table td {
-  padding: 7px;
+.manage-panels a:hover {
+  color: #ff6100;
 }

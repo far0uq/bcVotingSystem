@@ -1,0 +1,11 @@
+.manage-main-panel section {
+  background-color: white;
+  width: 70%;
+  border-radius: 5px;
+  margin-top: 30px;
+}
+
+.manage-main-panel section > div {
+  width: 70%;
+  margin: auto;
+}

@@ -1,35 +1,23 @@
-import { useState } from "react";
+import ManageCandidates from "../../components/ManageCandidates";
+import ManagePoll from "../../components/ManagePoll";
 import "./AdminPanel.css";
-import AddCandidateForm from "../../components/AddCandidateForm";
+import { useState } from "react";
 
 function AdminPanel() {
-  const [showForm, setShowForm] = useState(false);
+  const [switchPanel, setSwitchPanel] = useState(true);
 
   return (
     <div>
-      {console.log(showForm)}
-      {showForm && <AddCandidateForm setShowForm={setShowForm} />}
-
-      <div className="manage-main-panel d-flex flex-column align-items-center">
-        <section>
-          <div>
-            <table className="table candidate-table">
-              <tr>
-                <th>Candidate Name</th>
-              </tr>
-              <tr>
-                <td>John Doe</td>
-              </tr>
-              <tr>
-                <td>Jane Doe</td>
-              </tr>
-            </table>
-          </div>
-        </section>
-        <button className="mt-4" onClick={() => setShowForm(!showForm)}>
-          Add
-        </button>
+      <div className="manage-panels d-flex align-items-center">
+        <a href="#" onClick={() => setSwitchPanel(true)}>
+          Manage Candidates
+        </a>
+        <a href="#" onClick={() => setSwitchPanel(false)}>
+          Manage Polls
+        </a>
       </div>
+
+      {switchPanel ? <ManageCandidates /> : <ManagePoll />}
     </div>
   );
 }
