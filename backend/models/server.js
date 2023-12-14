@@ -1,7 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const authRoutes = require('./routes/authRoute');
+const authRoutes = require('../routes/authRoute');
+const cors = require('cors');
 
 dotenv.config();
 
@@ -12,6 +13,7 @@ app.use(express.json());
 app.use(cors());
 
 const connectDB = async () => {
+  console.log("Error");
   try {
     await mongoose.connect(process.env.MONGODB_URI, {
       useNewUrlParser: true,

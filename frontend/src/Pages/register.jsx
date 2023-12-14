@@ -19,6 +19,7 @@ const RegisterSchema = Yup.object().shape({
   confirmPassword: Yup.string()
     .required('Confirm Password is required')
     .oneOf([Yup.ref('password'), null], 'Passwords must match'),
+    address: Yup.string().required('Address is required'),
 });
 
 const Register = () => {
@@ -29,6 +30,7 @@ const Register = () => {
       username: '',
       password: '',
       confirmPassword: '',
+      address: '', 
     },
     validationSchema: RegisterSchema,
     onSubmit: async (values) => {
@@ -41,7 +43,7 @@ const Register = () => {
         if (isAdmin) {
           navigate('/admin-panel');
         } else {
-          navigate('/voter-panel');
+          navigate('/signin');
         }
       } catch (error) {
         console.error('Registration failed:', error.response.data.error);
@@ -97,6 +99,20 @@ const Register = () => {
                 <div className="error">{formik.errors.confirmPassword}</div>
               ) : null}
             </div>
+            <div className="inputs">
+             <input
+           type="text"
+           placeholder="Address"
+          name="address"
+           onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.address}
+  />
+  {formik.touched.address && formik.errors.address ? (
+    <div className="error">{formik.errors.address}</div>
+  ) : null}
+</div>
+
             <div className="btn">
               <input type="submit" value="Sign up" />
             </div>

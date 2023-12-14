@@ -4,11 +4,12 @@ const User = require('../models/user');
 
 exports.register = async (req, res) => {
   try {
-    const { username, password, isAdmin } = req.body;
+    console.log('control at register');
+    const { username, password, address} = req.body;
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = new User({ username, password: hashedPassword, isAdmin });
+    const user = new User({ username, password: hashedPassword, address});
 
     await user.save();
 
@@ -35,9 +36,9 @@ exports.login = async (req, res) => {
       return res.status(401).json({ error: 'Invalid username or password' });
     }
 
-    const token = jwt.sign({ userId: user._id, isAdmin: user.isAdmin }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user._id}, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-    res.status(200).json({ token, isAdmin: user.isAdmin });
+    res.status(200).json({ token});
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });
