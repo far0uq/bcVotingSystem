@@ -1,10 +1,11 @@
-import React from 'react'
+import React from 'react';
 import Logo from '../assets/logo/crystalvote_icon.png';
 import './auth.css'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate} from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
+
 
 const RegisterSchema = Yup.object().shape({
   username: Yup.string().required('Username is required'),
@@ -21,7 +22,7 @@ const RegisterSchema = Yup.object().shape({
 });
 
 const Register = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
@@ -32,23 +33,22 @@ const Register = () => {
     validationSchema: RegisterSchema,
     onSubmit: async (values) => {
       try {
-        const response = await axios.post('http://localhost:3001/auth/register', values);
+        const response = await axios.post('http://localhost:8000/auth/register', values);
         console.log('Registration successful:', response.data);
 
         // Check if the registered user is an admin
         const isAdmin = response.data.isAdmin;
         if (isAdmin) {
-        
-          history.push('/admin-panel');
+          navigate('/admin-panel');
         } else {
-       
-          history.push('/voter-panel');
+          navigate('/voter-panel');
         }
       } catch (error) {
         console.error('Registration failed:', error.response.data.error);
       }
     },
   });
+
   return (
     <>
       <div className="rect"></div>
@@ -86,7 +86,7 @@ const Register = () => {
             </div>
             <div className="inputs">
               <input
-                type="text"
+                type="password"
                 placeholder="Re-enter Password"
                 name="confirmPassword"
                 onChange={formik.handleChange}
@@ -112,3 +112,5 @@ const Register = () => {
     </>
   );
 }
+
+export default Register;

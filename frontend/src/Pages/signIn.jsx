@@ -1,7 +1,7 @@
 import React from 'react';
 import Logo from '../assets/logo/crystalvote_icon.png';
 import './auth.css'
-import { Link } from 'react-router-dom';
+import { Link,  useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
@@ -17,22 +17,32 @@ const SignInSchema = Yup.object().shape({
     ),
 });
 
-  export default function SignIn() {
-    const formik = useFormik({
-      initialValues: {
-        username: '',
-        password: '',
-      },
-      validationSchema: SignInSchema,
-      onSubmit: async (values) => {
-        try {
-          const response = await axios.post('http://localhost:3001/auth/login', values);
-          console.log('Login successful:', response.data);
-        } catch (error) {
-          console.error('Login failed:', error.response.data.error);
+const SignIn = () => {
+  const navigate = useNavigate();
+
+  const formik = useFormik({
+    initialValues: {
+      username: '',
+      password: '',
+    },
+    validationSchema: SignInSchema,
+    onSubmit: async (values) => {
+      try {
+        const response = await axios.post('http://localhost:8000/auth/login', values);
+        console.log('Login successful:', response.data);
+
+        // Check if the user is an admin or voter
+        const isAdmin = response.data.isAdmin;
+        if (isAdmin) {
+          navigate('/admin-panel');
+        } else {
+          navigate('/voter-panel');
         }
-      },
-    });
+      } catch (error) {
+        console.error('Login failed:', error.response.data.error);
+      }
+    },
+  });
 
   return (
     <>
@@ -82,6 +92,7 @@ const SignInSchema = Yup.object().shape({
         </div>
       </div>
     </>
-  )
+  );
 }
 
+export default SignIn;

@@ -2,21 +2,31 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const authRoutes = require('./routes/authRoute');
-//const adminRoutes = require('./routes/adminRoutes');
 
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3001;
-
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.connection.on('error', (error) => console.error(error));
-mongoose.connection.once('open', () => console.log('Connected to MongoDB'));
-
+const PORT = process.env.PORT || 8000;
 app.use(express.json());
 
-// Routes
+app.use(cors());
+
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
+    console.log('Connected to MongoDB');
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 app.use('/auth', authRoutes);
-//app.use('/admin', adminRoutes);
+
+
+connectDB();
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+

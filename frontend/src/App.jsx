@@ -2,8 +2,8 @@ import { useState } from 'react';
 import {Route, Routes} from 'react-router-dom';
 import SignIn from './Pages/signIn';
 import Register from './Pages/register';
-import AdminPanel from './panels/AdminPanel';
-import VoterPanel from './panels/VoterPanel';
+import AdminPanel from './Pages/AdminPanel';
+import VoterPanel from './Pages/VoterPanel';
 
 function App() {
   const [count, setCount] = useState(0);
