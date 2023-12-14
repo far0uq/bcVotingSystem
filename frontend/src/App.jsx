@@ -4,6 +4,9 @@ import SignIn from './Pages/signIn';
 import Register from './Pages/register';
 import AdminPanel from './Pages/AdminPanel';
 import VoterPanel from './Pages/VoterPanel';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
+
 
 function App() {
   const [count, setCount] = useState(0);
@@ -17,6 +20,7 @@ function App() {
       <Route path="/admin-panel" element={<AdminPanel />} />
       <Route path="/voter-panel" element={<VoterPanel />} />
       </Routes>
+      <ToastContainer />
       </>
   );
 }

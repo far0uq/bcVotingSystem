@@ -5,6 +5,8 @@ import { Link,  useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const SignInSchema = Yup.object().shape({
   username: Yup.string().required('Username is required'),
@@ -36,16 +38,19 @@ const SignIn = () => {
         if (isAdmin) {
           navigate('/admin-panel');
         } else {
+          toast.success('Login successful.');
           navigate('/voter-panel');
         }
       } catch (error) {
         console.error('Login failed:', error.response.data.error);
+        toast.error('Login failed. Please check your credentials.');
       }
     },
   });
 
   return (
     <>
+    <ToastContainer/>
       <div className="rect"></div>
       <div className="main">
         <div className="container">
