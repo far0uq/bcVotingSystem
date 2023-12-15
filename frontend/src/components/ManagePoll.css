@@ -1,0 +1,10 @@
+.admin-result-heading {
+  margin-top: 20px;
+  font-weight: bolder;
+  font-style: italic;
+  height: 180px;
+}
+
+.inactive-voting-btn {
+  background-color: grey;
+}

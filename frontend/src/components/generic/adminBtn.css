@@ -1,0 +1,12 @@
+.admin-btn {
+  background-color: #ff6100;
+  color: white;
+  border: 0px;
+  border-radius: 5px;
+  width: 70%;
+  height: 35px;
+  transition: background-color 0.2s ease;
+}
+.admin-btn:hover {
+  background-color: #007721;
+}
