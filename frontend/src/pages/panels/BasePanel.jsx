@@ -19,7 +19,7 @@ function BasePanel() {
         <div className="col-1"></div>
       </nav>
 
-      <AdminPanel />
+      <VotingPanel />
     </div>
   );
 }

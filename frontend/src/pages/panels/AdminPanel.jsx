@@ -1,6 +1,6 @@
 import ManageCandidates from "../../components/ManageCandidates";
 import ManagePoll from "../../components/ManagePoll";
-import "./AdminPanel.css";
+import "./generic/Panel.css";
 import { useState } from "react";
 
 function AdminPanel() {
@@ -13,7 +13,7 @@ function AdminPanel() {
           Manage Candidates
         </a>
         <a href="#" onClick={() => setSwitchPanel(false)}>
-          Manage Polls
+          Manage Poll
         </a>
       </div>
 

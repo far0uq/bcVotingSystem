@@ -1,9 +1,52 @@
+import { useEffect, useState } from "react";
+import { useContractContext } from "../context/contractContext";
+
 import "./ManagePoll.css";
 import "./generic/adminBtn.css";
 import "./generic/adminTable.css";
-import { useState } from "react";
+
 function ManagePoll() {
   const [isVotingActive, setIsVotingActive] = useState(false);
+  const [isVotingConcluded, setIsVotingConcluded] = useState(false);
+  const [winner, setWinner] = useState(null);
+  const { sharedData } = useContractContext();
+
+  useEffect(() => {
+    const fetchVotingStarted = async () => {
+      const hasVotingStarted = await sharedData.contract.isVotingStarted();
+      setIsVotingActive(hasVotingStarted);
+    };
+
+    const fetchVotingConcluded = async () => {
+      const hasVotingConcluded = await sharedData.contract.isVotingConcluded();
+      setIsVotingConcluded(hasVotingConcluded);
+    };
+
+    fetchVotingStarted();
+    fetchVotingConcluded();
+  }, [sharedData.contract]);
+
+  useEffect(() => {
+    const fetchWinner = async () => {
+      setWinner(await sharedData.contract.getWinner());
+    };
+    fetchWinner();
+  }, [isVotingConcluded]);
+
+  const startVotingTime = async () => {
+    if (!isVotingActive) {
+      await sharedData.contract.commenceVoting();
+      setIsVotingActive(true);
+    }
+  };
+
+  const stopVotingTime = async () => {
+    if (isVotingActive) {
+      await sharedData.contract.endVoting();
+      setIsVotingActive(false);
+      setIsVotingConcluded(true);
+    }
+  };
 
   return (
     <div>
@@ -11,7 +54,11 @@ function ManagePoll() {
         <section>
           <div>
             <div className="admin-result-heading d-flex align-items-center justify-content-center">
-              <h2>Voting Ongoing...</h2>
+              {isVotingConcluded ? (
+                <h2>{winner} won the poll.</h2>
+              ) : (
+                <h2>Voting Ongoing...</h2>
+              )}
             </div>
             <table className="table admin-table">
               <tr>
@@ -38,7 +85,7 @@ function ManagePoll() {
           className={`mt-4 admin-btn ${
             isVotingActive && "inactive-voting-btn"
           }`}
-          onClick={() => setIsVotingActive(true)}
+          onClick={() => startVotingTime(true)}
         >
           Start Voting Time
         </button>
@@ -46,7 +93,7 @@ function ManagePoll() {
           className={`mt-4 admin-btn ${
             !isVotingActive && "inactive-voting-btn"
           }`}
-          onClick={() => setIsVotingActive(false)}
+          onClick={() => stopVotingTime(false)}
         >
           Stop Voting Time
         </button>

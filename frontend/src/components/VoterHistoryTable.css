@@ -1,0 +1,11 @@
+.voter-history-table {
+  color: white;
+  width: 70%;
+  margin: 50px auto auto auto;
+}
+
+.voter-history-table th,
+.voter-history-table td {
+  border: 1px solid white;
+  padding-left: 20px;
+}

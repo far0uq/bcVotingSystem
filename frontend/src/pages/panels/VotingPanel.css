@@ -1,20 +1,10 @@
-.poll-dropdown {
-  background-color: #414141;
-  margin: auto;
-  border-radius: 5px;
-  border: 0px;
-  color: white;
-  width: 50%;
-  height: 35px;
-  margin: 40px auto;
-}
-
 .voting-section {
   background-color: #414141;
   width: 70%;
   margin: auto;
   border-radius: 5px;
-  height: 520px;
+  padding: 20px;
+  margin-top: 200px;
 }
 
 .voting-section button {
@@ -24,14 +14,15 @@
   border-radius: 5px;
   width: 80%;
   height: 35px;
+  margin-top: 20px;
 }
 
 .voting-section button:hover {
   background-color: #006377;
 }
 
-.voting-section h1 {
-  height: 430px;
-  background-color: white;
+.voting-select {
   width: 80%;
+  height: 35px;
+  border-radius: 5px;
 }
